@@ -15,6 +15,7 @@ const UI = (() => {
       const li = document.createElement('li');
       li.append(createForm());
       projectsList.append(li);
+      
     })
     return {
 
