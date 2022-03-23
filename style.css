@@ -7,6 +7,8 @@
 :root{
     --max-width:70%;
     --text-color: black;
+    --confirm-color: rgb(50,205,50);
+    --cancel-color: rgb(255,55,55);
 }
 body{
     background: white;
@@ -55,7 +57,7 @@ footer img{
 footer img:hover{
     transform: rotate(360deg) scale(1.2);
 }
-.left button{
+button{
     background: none;
     cursor: pointer;
     border: none;
@@ -67,4 +69,10 @@ ul {
 }
 .plus{
     margin-right: 10px;
+}
+.confirm{
+    background-color: var(--confirm-color);
+}
+.cancel{
+    background-color: var(--cancel-color);
 }
