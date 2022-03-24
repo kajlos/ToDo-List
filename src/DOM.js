@@ -23,6 +23,10 @@ const UI = (() => {
       const confirmButton = document.createElement('button');
       confirmButton.textContent="create";
       confirmButton.classList.add('confirm');
+      confirmButton.addEventListener('click',(e)=>{
+        e.preventDefault();
+        console.log(e);
+      })
       const cancelButton = document.createElement('button');
       cancelButton.textContent="cancel";
       cancelButton.classList.add('cancel');
