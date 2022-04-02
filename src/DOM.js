@@ -15,6 +15,7 @@ const UI = (() => {
         e.preventDefault();
         console.log(e);
         
+        
       })
       const cancelButton = document.createElement('button');
       cancelButton.textContent="cancel";
