@@ -55,13 +55,6 @@ const UI = (() => {
     createAddProjectButton();
     return {
 
-      
-      
-      
-      
-      
-      
-      
     };
   })();
 export default UI;
