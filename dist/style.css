@@ -76,3 +76,7 @@ ul {
 .cancel{
     background-color: var(--cancel-color);
 }
+.error{
+    color: red;
+    font-size: .7rem;
+}

@@ -1,7 +1,8 @@
 import Project from "./projects";
 import Storage from "./storage";
 const UI = (() => {
-    const projectsList = document.getElementById('projects');
+    const projectsList = document.getElementById('projects');        
+    let errorMessage="This project already exists";
     const createAddProjectButton = ()=>{
       const text="Add project"
       const li = document.createElement('li');
@@ -22,7 +23,34 @@ const UI = (() => {
       projectsList.removeChild(button);
     }
     const removeForm = (e)=>{
+      if(projectsList.firstChild){
         projectsList.removeChild(e);
+      }
+    }
+    const removeProjects = ()=>{
+      while(projectsList.firstChild){
+        projectsList.removeChild(projectsList.lastChild);
+      }
+    }
+    const displayProjects =()=>{
+      removeProjects();
+      let projects = Storage.getProjects();
+      if(!projects==''){
+         projects.forEach(project => {
+        let name = project.name;
+        let li = document.createElement("li");
+        li.append(name);
+        projectsList.append(li);
+      });
+      }
+     
+    }
+    const removeErrorMessage=()=>{
+      let childnodes =Array.from(projectsList.children);
+      if(childnodes.some(e=>e.classList.contains('error'))){
+        let found = childnodes.find(e=>e.textContent==errorMessage);
+        projectsList.removeChild(found);
+      }
     }
     const addProject =()=>{
       removeAddProjectButton();
@@ -43,23 +71,32 @@ const UI = (() => {
       cancelButton.type="button";
       cancelButton.addEventListener("click",(e)=>{
         removeForm(e.target.parentNode.parentNode);
+        removeErrorMessage();
         createAddProjectButton();
       })
       form.append(input, confirmButton, cancelButton);
       form.addEventListener('submit',(e)=>{
         e.preventDefault();
         let name = document.getElementById('projectName').value;
+
         if (Storage.find("Projects",name)){
-          console.log("found");
+          let childnodes =Array.from(projectsList.children);
+          if(!childnodes.some(e=> e.textContent==errorMessage && e.classList.contains('error'))){
+            let li=document.createElement('li');
+            li.append(errorMessage);
+            li.classList.add('error');
+            projectsList.append(li);
+          }
         }else{
-          console.log("not found");
+          Storage.addItem("Projects",new Project(name));
+          displayProjects();
+          createAddProjectButton();
         }
-        removeForm(e.target.parentNode);
-        createAddProjectButton();
       })
       li.append(form);
       projectsList.append(li);
     }
+    displayProjects();
     createAddProjectButton();
     Storage.initializeLocalStorage();
     return {
