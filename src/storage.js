@@ -27,5 +27,13 @@ class Storage{
     static getProjects(){
         return JSON.parse(localStorage.getItem("Projects"));
     }
+    static removeProject(name){
+        let projects = JSON.parse(localStorage.getItem("Projects"));
+        let index = projects.findIndex(e=>e.name===name);
+        if(index >=0){
+            projects.splice(index,1); 
+            localStorage.setItem("Projects",JSON.stringify(projects));
+        }
+    }
 }
 export default Storage;
