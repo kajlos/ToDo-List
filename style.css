@@ -124,6 +124,29 @@ ul {
     left:50%;
     transform: translate(-50%,-50%);
     border:1px solid black;
-    width: 70%;
+    width: 50%;
     background-color: lightblue;
+    height: 50%;
+}
+.taskForm{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.taskForm>div{
+    display: flex;
+    flex-direction: column;
+}
+.taskForm textarea, .taskForm div:nth-child(2) {
+    resize: none;
+    flex:1;
+}
+.taskForm input,.taskForm textarea{
+    width:300px;
+}
+.taskForm div:nth-child(4){
+    display: flex;
+    flex-direction: row;
 }
