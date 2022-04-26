@@ -122,13 +122,79 @@ const UI = (() => {
     addTaskButton.addEventListener('click',()=>{
       const div = document.createElement('div');
       const form =document.createElement('form');
+      const projects = Storage.getProjects();
+      const projectsSelect = document.createElement('select');
+      projects.forEach(e=>{
+        let option = document.createElement('option');
+        option.text=e.name;
+        projectsSelect.append(option);
+      })
+      const projectsDiv=document.createElement('div');
+      const projectsLabel = document.createElement('label');
+      projectsLabel.htmlFor="projectTask";
+      projectsLabel.textContent="Project";
+      projectsDiv.append(projectsLabel,projectsSelect);
       const name = document.createElement('input');
+      const nameLabel = document.createElement('label');
+      nameLabel.textContent="Task Name";
+      nameLabel.htmlFor="taskName";
+      name.id="taskName";
+      name.required=true;
       const description = document.createElement('textarea');
+      const descriptionLabel=document.createElement('label');
+      descriptionLabel.textContent="Description";
+      descriptionLabel.htmlFor="description";
+      description.id='description';
+      description.required=true;
       const dueDate = document.createElement('input');
-      dueDate.type ='date';
+      const dueDateLabel = document.createElement('label');
+      dueDateLabel.textContent="Due Date";  
+      dueDateLabel.htmlFor="dueDate";
+      dueDate.id="dueDate";
+      dueDate.required=true; 
       const priority = document.createElement('select');
+      const option1=document.createElement('option');
+      option1.textContent='Low';
+      const option2=document.createElement('option');
+      option2.textContent='Medium';
+      const option3=document.createElement('option');
+      option3.textContent='High';
+      priority.options.add(option1);
+      priority.options.add(option2);
+      priority.options.add(option3);
+      const priorityLabel = document.createElement('label')
+      priorityLabel.textContent="Priority";
+      priorityLabel.htmlFor="priority";
+      priority.id="priority";
+      priority.required=true;
+      const confirmButton = document.createElement('button');
+      confirmButton.textContent="Add";
+      confirmButton.classList.add('confirm');
+      dueDate.type ='date';
+      description.maxLength=250;
       div.id="modal";
-      form.append(name,description,dueDate,priority);
+      const nameDiv=document.createElement('div');
+      nameDiv.append(nameLabel,name);
+      const descriptionDiv=document.createElement('div');
+      descriptionDiv.append(descriptionLabel,description);
+      const dueDateDiv = document.createElement('div');
+      dueDateDiv.append(dueDateLabel,dueDate);
+      const priorityDiv=document.createElement('div');
+      const priorityDivDiv=document.createElement('div');
+      priorityDivDiv.append(priorityLabel,priority);
+      priorityDiv.append(priorityDivDiv, projectsDiv);
+      const buttonDiv=document.createElement('div');
+      buttonDiv.append(confirmButton);
+      form.classList.add('taskForm');
+      form.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        let name = document.getElementById('taskName').value
+        let description = document.getElementById('description').value;
+        let dueDate = document.getElementById('dueDate').value;
+        let priority = document.getElementById('priority').value;
+        console.log(name,description,dueDate,priority);
+      })
+      form.append(nameDiv,descriptionDiv,dueDateDiv,priorityDiv,buttonDiv);
       div.append(form);
       right.append(div);
     })
