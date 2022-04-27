@@ -124,9 +124,11 @@ ul {
     left:50%;
     transform: translate(-50%,-50%);
     border:1px solid black;
-    width: 50%;
-    background-color: lightblue;
+    width: 40%;
+    background-color: lightgray;
     height: 50%;
+    padding: 1rem;
+    z-index: 1000;
 }
 .taskForm{
     height: 100%;
@@ -146,7 +148,16 @@ ul {
 .taskForm input,.taskForm textarea{
     width:300px;
 }
-.taskForm div:nth-child(4){
+.taskForm div:nth-child(4),.taskForm div:nth-child(5) {
     display: flex;
     flex-direction: row;
+}
+#background{
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    position: fixed;
 }
