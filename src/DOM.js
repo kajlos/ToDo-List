@@ -1,9 +1,11 @@
 import Project from "./projects";
 import Storage from "./storage";
+import Task from "./tasks";
 const UI = (() => {
     const projectsList = document.getElementById('projects');
     const addTaskButton = document.getElementById('addTask');
-    const body = document.querySelector('body');     
+    const body = document.querySelector('body');
+    const right = document.querySelector('.right');
     let errorMessage="This project already exists";
     const createAddProjectButton = ()=>{
       const text="Add project"
@@ -47,17 +49,25 @@ const UI = (() => {
         img.classList.add('rotate');
         removeButton.append(img);
         removeButton.addEventListener('click',(e)=>{
+          while(right.firstChild){
+            right.removeChild(right.firstChild);
+          }
           let name = (e.target.parentNode.parentNode.textContent);
           Storage.removeProject(name);
           displayProjects();
           createAddProjectButton();
+          e.stopPropagation();
         })
         const div = document.createElement('div');
         div.append(name,removeButton);
-        div.classList.add('project','projects');
+        div.classList.add('projects');
+        div.addEventListener('click',()=>{
+          displayTasks(name);
+        });
         let li = document.createElement("li");
         li.append(div);
         projectsList.append(li);
+        displayTasks(name);
       });
       }
      
@@ -111,7 +121,7 @@ const UI = (() => {
             projectsList.append(li);
           }
         }else{
-          Storage.addItem("Projects",new Project(name));
+          Storage.addProject(new Project(name));
           displayProjects();
           createAddProjectButton();
         }
@@ -139,6 +149,35 @@ const UI = (() => {
           body.removeChild(nodes[i]);
         }
       }
+    }
+    const displayTasks = (projectName)=>{
+      let tasks = Storage.getProject(projectName).getTasks();
+      let right = document.querySelector('.right');
+      while(right.firstChild){
+        right.removeChild(right.firstChild);
+      }
+      let h2 = document.createElement('h2');
+      h2.textContent = projectName;
+      right.append(h2);
+      tasks.forEach((task)=>{
+        let div = document.createElement('div')
+        let name = task.name;
+        let date = task.dueDate;
+        let priority = task.priority;
+        let removeTaskButton = document.createElement('button');
+        div.classList.add('task');
+        let img = document.createElement('img');
+        img.src = "../dist/icons/plus.svg";
+        img.classList.add('rotate');
+        removeTaskButton.append(img);
+        removeTaskButton.addEventListener('click',()=>{
+          Storage.removeTask(projectName,name);
+          displayTasks(projectName);
+        });
+        div.append(name,date,priority,removeTaskButton);
+        right.append(div);
+      });
+
     }
     addTaskButton.addEventListener('click',()=>{
       createBlackBackground();
@@ -222,6 +261,8 @@ const UI = (() => {
         let projectsSelect = document.getElementById('projectTask').value;
         console.log(name,description,dueDate,priority,projectsSelect);
         if(Storage.find('Projects',projectsSelect)){
+          Storage.addTask(projectsSelect,new Task(name,description,dueDate,priority));
+          displayTasks(projectsSelect);
           removeBlackBackground();
           removeTaskForm();
         }

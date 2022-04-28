@@ -8,10 +8,10 @@ class Storage{
             return false;
         }
     }
-    static addItem(key,name){
-        let myArray =JSON.parse(localStorage.getItem(key));
+    static addProject(name){
+        let myArray =JSON.parse(localStorage.getItem('Projects'));
         myArray.push(name);
-        localStorage.setItem(key,JSON.stringify(myArray));
+        localStorage.setItem("Projects",JSON.stringify(myArray));
     }
     static initializeLocalStorage(){
         if (localStorage.getItem('Projects')){
@@ -28,12 +28,29 @@ class Storage{
         return JSON.parse(localStorage.getItem("Projects"));
     }
     static removeProject(name){
-        let projects = JSON.parse(localStorage.getItem("Projects"));
+        let projects = this.getProjects();
         let index = projects.findIndex(e=>e.name===name);
         if(index >=0){
             projects.splice(index,1); 
             localStorage.setItem("Projects",JSON.stringify(projects));
         }
     }
+    static getProject(name){
+        let projects = this.getProjects()
+        return Object.assign(new Project,projects.find(e=>e.name == name));
+    }
+    static addTask(projectName,task){
+        let project = this.getProject(projectName);
+        project.addTask(task);
+        this.removeProject(projectName)
+        this.addProject(project);
+    }
+    static removeTask(projectName,task){
+        let project = this.getProject(projectName);
+        project.removeTask(task);
+        this.removeProject(projectName);
+        this.addProject(project);
+    }
+
 }
 export default Storage;
