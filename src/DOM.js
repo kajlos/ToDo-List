@@ -278,6 +278,7 @@ const UI = (() => {
     })
     
     
+    
     Storage.initializeLocalStorage();
     displayProjects();
     createAddProjectButton();
