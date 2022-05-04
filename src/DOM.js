@@ -276,11 +276,6 @@ const UI = (() => {
       div.append(form);
       body.append(div);
     })
-    
-    
-    
-    
-    
     Storage.initializeLocalStorage();
     displayProjects();
     createAddProjectButton();
