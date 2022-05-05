@@ -58,6 +58,7 @@ const UI = (() => {
           createAddProjectButton();
           e.stopPropagation();
         })
+        
         const div = document.createElement('div');
         div.append(name,removeButton);
         div.classList.add('projects');
@@ -177,6 +178,7 @@ const UI = (() => {
         div.append(name,date,priority,removeTaskButton);
         right.append(div);
       });
+
 
     }
     addTaskButton.addEventListener('click',()=>{
