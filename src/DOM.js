@@ -59,6 +59,7 @@ const UI = (() => {
           e.stopPropagation();
         })
         
+        
         const div = document.createElement('div');
         div.append(name,removeButton);
         div.classList.add('projects');
