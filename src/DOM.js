@@ -60,6 +60,7 @@ const UI = (() => {
         })
         
         
+        
         const div = document.createElement('div');
         div.append(name,removeButton);
         div.classList.add('projects');
