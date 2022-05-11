@@ -127,13 +127,14 @@ ul {
     border:1px solid black;
     width: 40%;
     background-color: lightgray;
-    height: 50%;
+    min-height: 50%;
     padding: 1rem;
     z-index: 1000;
 }
 .taskForm{
     height: 100%;
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
@@ -173,4 +174,31 @@ ul {
     justify-content: space-between;
     align-items: center;
     padding: .5rem;
+    background-color: lightgray;
+    width:100%;
+    margin-top:.5rem;
+    border-radius: .5rem;
+    border-left: .4rem solid;
+}
+.task>div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:1rem;
+}
+.task>div>img{
+    cursor: pointer;
+}
+.Low{
+    border-color:green;
+}
+.Medium{
+    border-color:orange;
+}
+.High{
+    border-color:red;
+}
+.checked{
+    background-color: rgba(0,0,0,0.1);
+    color:grey;
 }
