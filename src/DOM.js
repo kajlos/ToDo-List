@@ -161,21 +161,48 @@ const UI = (() => {
       h2.textContent = projectName;
       right.append(h2);
       tasks.forEach((task)=>{
-        let div = document.createElement('div')
+        let div = document.createElement('div');
+        let check = document.createElement('img');
+        let leftDiv = document.createElement('div');
+        let rightDiv = document.createElement('div');
         let name = task.name;
         let date = task.dueDate;
         let priority = task.priority;
+        let isCompleted = task.isCompleted;
         let removeTaskButton = document.createElement('button');
-        div.classList.add('task');
+        if(isCompleted){
+          div.classList.add('task',priority,'checked');
+          check.src="..//dist/icons/fullCheckbox.svg";
+        }else{
+          div.classList.add('task',priority);        
+          check.src="..//dist/icons/emptyCheckbox.svg";
+        }
         let img = document.createElement('img');
         img.src = "../dist/icons/plus.svg";
         img.classList.add('rotate');
         removeTaskButton.append(img);
-        removeTaskButton.addEventListener('click',()=>{
+        removeTaskButton.addEventListener('click',(e)=>{
           Storage.removeTask(projectName,name);
           displayTasks(projectName);
+          e.stopPropagation();
         });
-        div.append(name,date,priority,removeTaskButton);
+        check.addEventListener('click',(e)=>{
+          console.log(e.target.parentNode.parentNode);
+          if(e.target.parentNode.parentNode.classList.contains('checked')){
+            e.target.parentNode.parentNode.classList.remove('checked');
+            e.target.src="..//dist/icons/emptyCheckbox.svg";
+            task.isCompleted = false;
+            Storage.updateTask(projectName,task);
+          }else{
+            e.target.parentNode.parentNode.classList.add('checked');
+            e.target.src="..//dist/icons/fullCheckbox.svg";
+            task.isCompleted = true;
+            Storage.updateTask(projectName,task);
+          }
+        });
+        leftDiv.append(check,name);
+        rightDiv.append(date,removeTaskButton);
+        div.append(leftDiv,rightDiv);
         right.append(div);
       });
 
@@ -239,6 +266,8 @@ const UI = (() => {
       cancelButton.classList.add('cancel');
       cancelButton.type="button";
       dueDate.type ='date';
+      let today = new Date().toISOString().slice(0, 10)
+      dueDate.min = today;
       description.maxLength=250;
       div.id="modal";
       const nameDiv=document.createElement('div');
@@ -263,7 +292,7 @@ const UI = (() => {
         let projectsSelect = document.getElementById('projectTask').value;
         console.log(name,description,dueDate,priority,projectsSelect);
         if(Storage.find('Projects',projectsSelect)){
-          Storage.addTask(projectsSelect,new Task(name,description,dueDate,priority));
+          Storage.addTask(projectsSelect,new Task(name,description,dueDate,priority,false));
           displayTasks(projectsSelect);
           removeBlackBackground();
           removeTaskForm();

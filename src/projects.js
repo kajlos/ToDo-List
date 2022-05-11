@@ -11,6 +11,7 @@ export default class Project{
         this.tasks.push(task);
     }
     removeTask(task){
-        this.tasks.splice(this.tasks.indexOf(task),1);
+        let index = this.tasks.map(object=>object.name).indexOf(task);
+        this.tasks.splice(index,1);
     }
 }

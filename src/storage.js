@@ -51,6 +51,12 @@ class Storage{
         this.removeProject(projectName);
         this.addProject(project);
     }
-
+    static updateTask(projectName,task){
+        let project = this.getProject(projectName);
+        project.removeTask(task);
+        project.addTask(task);
+        this.removeProject(projectName);
+        this.addProject(project);
+    }
 }
 export default Storage;
