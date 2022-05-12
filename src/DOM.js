@@ -199,6 +199,7 @@ const UI = (() => {
             task.isCompleted = true;
             Storage.updateTask(projectName,task);
           }
+          
         });
         leftDiv.append(check,name);
         rightDiv.append(date,removeTaskButton);
