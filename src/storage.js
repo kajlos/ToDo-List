@@ -36,7 +36,7 @@ class Storage{
         }
     }
     static getProject(name){
-        let projects = this.getProjects()
+        let projects = this.getProjects();
         return Object.assign(new Project,projects.find(e=>e.name == name));
     }
     static addTask(projectName,task){
@@ -51,10 +51,14 @@ class Storage{
         this.removeProject(projectName);
         this.addProject(project);
     }
-    static updateTask(projectName,task){
-        let project = this.getProject(projectName);
-        project.removeTask(task);
-        project.addTask(task);
+    static updateTask(projectName,task){        
+        let project = JSON.parse(localStorage.getItem('Projects')).find(e=>e.name == projectName);
+        console.log(project);
+        let as = project.tasks.find(e=>e.name == task.name);
+        project.tasks.splice(project.tasks.indexOf(as),1);
+        console.log(project);
+        project.tasks.push(task);
+        console.log(project);
         this.removeProject(projectName);
         this.addProject(project);
     }

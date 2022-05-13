@@ -187,19 +187,19 @@ const UI = (() => {
           e.stopPropagation();
         });
         check.addEventListener('click',(e)=>{
-          console.log(e.target.parentNode.parentNode);
           if(e.target.parentNode.parentNode.classList.contains('checked')){
             e.target.parentNode.parentNode.classList.remove('checked');
             e.target.src="..//dist/icons/emptyCheckbox.svg";
-            task.isCompleted = false;
+            console.log(task);
+            task.uncompleteTask();
             Storage.updateTask(projectName,task);
           }else{
             e.target.parentNode.parentNode.classList.add('checked');
             e.target.src="..//dist/icons/fullCheckbox.svg";
-            task.isCompleted = true;
+            task.completeTask();
             Storage.updateTask(projectName,task);
           }
-          
+          e.stopPropagation();
         });
         leftDiv.append(check,name);
         rightDiv.append(date,removeTaskButton);

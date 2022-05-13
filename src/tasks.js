@@ -6,4 +6,10 @@ export default class Task{
         this.priority=priority;
         this.isCompleted = isCompleted
     }
+    completeTask(){
+        this.isCompleted = true;
+    }
+    uncompleteTask(){
+        this.isCompleted = false;
+    }
 }

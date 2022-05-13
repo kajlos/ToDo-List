@@ -1,3 +1,4 @@
+import Task from "./tasks";
 
 export default class Project{
     constructor(name){
@@ -5,7 +6,12 @@ export default class Project{
         this.tasks = [];
     }
     getTasks(){
-        return this.tasks;
+        let arr = [];
+        this.tasks.forEach(task=>{
+            let obj = Object.assign(new Task,task);
+            arr.push(obj);
+        });
+        return arr;
     }
     addTask(task){
         this.tasks.push(task);
