@@ -6,27 +6,8 @@ const UI = (() => {
   const addTaskButton = document.getElementById('addTask');
   const body = document.querySelector('body');
   const right = document.querySelector('.right');
+  const addProjectButton = document.getElementById('addProjectButton');
   let errorMessage = 'This project already exists';
-  const createAddProjectButton = () => {
-    const text = 'Add project';
-    const li = document.createElement('li');
-    li.id = 'projectButton';
-    const img = document.createElement('img');
-    img.src = './icons/plus.svg';
-    img.classList.add('plus');
-    img.alt = '';
-    const button = document.createElement('button');
-    button.id = 'addProjectButton';
-    button.classList.add('project');
-    button.append(img, text);
-    li.append(button);
-    projectsList.append(li);
-    button.addEventListener('click', addProject);
-  };
-  const removeAddProjectButton = () => {
-    const button = document.getElementById('projectButton');
-    projectsList.removeChild(button);
-  };
   const removeForm = e => {
     if (projectsList.firstChild) {
       projectsList.removeChild(e);
@@ -58,7 +39,6 @@ const UI = (() => {
           let name = e.target.parentNode.parentNode.textContent;
           Storage.removeProject(name);
           displayProjects();
-          createAddProjectButton();
           e.stopPropagation();
         });
 
@@ -81,8 +61,9 @@ const UI = (() => {
     }
   };
   const addProject = () => {
-    removeAddProjectButton();
+    if ([...projectsList.children].some(e => e.dataset.open === 'true')) return;
     const li = document.createElement('li');
+    li.dataset.open = true;
     const form = document.createElement('form');
     const input = document.createElement('input');
     const buttons = document.createElement('div');
@@ -102,7 +83,6 @@ const UI = (() => {
     cancelButton.addEventListener('click', e => {
       removeForm(e.target.parentNode.parentNode.parentNode.parentNode);
       removeErrorMessage();
-      createAddProjectButton();
     });
     buttons.classList.add('formButtons');
     buttons.append(confirmButton, cancelButton);
@@ -124,7 +104,6 @@ const UI = (() => {
       } else {
         Storage.addProject(new Project(name));
         displayProjects();
-        createAddProjectButton();
       }
     });
     li.append(form);
@@ -210,10 +189,13 @@ const UI = (() => {
   addTaskButton.addEventListener('click', () => {
     createBlackBackground();
     const div = document.createElement('div');
+    const container = document.createElement('div');
+    container.classList.add('container');
     const form = document.createElement('form');
     const projects = Storage.getProjects();
     const projectsSelect = document.createElement('select');
     projectsSelect.id = 'projectTask';
+    projectsSelect.classList.add('taskFormInput');
     projects.forEach(e => {
       let option = document.createElement('option');
       option.text = e.name;
@@ -230,18 +212,14 @@ const UI = (() => {
     nameLabel.htmlFor = 'taskName';
     name.id = 'taskName';
     name.required = true;
-    const description = document.createElement('textarea');
-    const descriptionLabel = document.createElement('label');
-    descriptionLabel.textContent = 'Description';
-    descriptionLabel.htmlFor = 'description';
-    description.id = 'description';
-    description.required = true;
+    name.classList.add('taskFormInput');
     const dueDate = document.createElement('input');
     const dueDateLabel = document.createElement('label');
     dueDateLabel.textContent = 'Due Date';
     dueDateLabel.htmlFor = 'dueDate';
     dueDate.id = 'dueDate';
     dueDate.required = true;
+    dueDate.classList.add('taskFormInput');
     const priority = document.createElement('select');
     const option1 = document.createElement('option');
     option1.textContent = 'Low';
@@ -257,6 +235,7 @@ const UI = (() => {
     priorityLabel.htmlFor = 'priority';
     priority.id = 'priority';
     priority.required = true;
+    priority.classList.add('taskFormInput');
     const confirmButton = document.createElement('button');
     confirmButton.textContent = 'Add';
     confirmButton.classList.add('confirm');
@@ -267,31 +246,28 @@ const UI = (() => {
     dueDate.type = 'date';
     let today = new Date().toISOString().slice(0, 10);
     dueDate.min = today;
-    description.maxLength = 250;
     div.id = 'modal';
     const nameDiv = document.createElement('div');
     nameDiv.append(nameLabel, name);
-    const descriptionDiv = document.createElement('div');
-    descriptionDiv.append(descriptionLabel, description);
     const dueDateDiv = document.createElement('div');
     dueDateDiv.append(dueDateLabel, dueDate);
     const priorityDiv = document.createElement('div');
     const priorityDivDiv = document.createElement('div');
+    priorityDiv.classList.add('columns');
     priorityDivDiv.append(priorityLabel, priority);
     priorityDiv.append(priorityDivDiv, projectsDiv);
     const buttonDiv = document.createElement('div');
+    buttonDiv.classList.add('columns');
     buttonDiv.append(confirmButton, cancelButton);
-    form.classList.add('taskForm');
     form.addEventListener('submit', e => {
       e.preventDefault();
       let name = document.getElementById('taskName').value;
-      let description = document.getElementById('description').value;
       let dueDate = document.getElementById('dueDate').value;
       let priority = document.getElementById('priority').value;
       let projectsSelect = document.getElementById('projectTask').value;
-      console.log(name, description, dueDate, priority, projectsSelect);
+      console.log(name, dueDate, priority, projectsSelect);
       if (Storage.find('Projects', projectsSelect)) {
-        Storage.addTask(projectsSelect, new Task(name, description, dueDate, priority, false));
+        Storage.addTask(projectsSelect, new Task(name, dueDate, priority, false));
         displayTasks(projectsSelect);
         removeBlackBackground();
         removeTaskForm();
@@ -301,13 +277,15 @@ const UI = (() => {
       removeBlackBackground();
       removeTaskForm();
     });
-    form.append(nameDiv, descriptionDiv, dueDateDiv, priorityDiv, buttonDiv);
+    container.append(nameDiv, dueDateDiv, priorityDiv, buttonDiv);
+    form.append(container);
     div.append(form);
     body.append(div);
   });
+  addProjectButton.addEventListener('click', addProject);
   Storage.initializeLocalStorage();
   displayProjects();
-  createAddProjectButton();
+
   return {};
 })();
 export default UI;
