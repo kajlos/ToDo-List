@@ -29,18 +29,32 @@ header {
 main {
   display: flex;
   flex-grow: 1;
+  /* grid-template-columns: 1fr 4fr; */
 }
+
 .left {
-  flex: 1;
   background-color: rgba(210, 215, 211, 0.5);
   font-size: 1.5rem;
   min-height: 100%;
   position: relative;
   text-align: center;
   padding-inline: 1em;
+  width: 100%;
+  max-width: 300px;
+}
+span {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 500px) {
+  main {
+    flex-direction: column;
+  }
+  .left {
+    max-width: none;
+  }
 }
 .right {
-  flex: 4;
+  flex-grow: 1;
 }
 button {
   background: none;
@@ -80,6 +94,7 @@ ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow-wrap: break-word;
 }
 .formButtons {
   margin-top: 0.3rem;
